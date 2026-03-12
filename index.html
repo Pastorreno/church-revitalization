@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remember. Repent. Recover. — A Church Revitalization Guide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #faf9f7;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+  #app {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 1.5rem 0 4rem;
+  }
+  h1 { font-size: 30px; font-weight: 500; line-height: 1.3; }
+  h2 { font-size: 24px; font-weight: 500; line-height: 1.3; }
+  h3 { font-size: 18px; font-weight: 500; line-height: 1.4; }
+  p  { font-size: 15px; line-height: 1.8; color: #444; }
+  .sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .card {
+    background: #fff;
+    border: 0.5px solid #e0ddd8;
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .surface {
+    background: #f3f1ec;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+  }
+  .step-nav { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+  .step-btn {
+    flex: 1; text-align: center; padding: 10px 6px;
+    border-radius: 8px; border: 0.5px solid #e0ddd8;
+    background: #f3f1ec; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .step-btn.active  { background: #fef3e2; border-color: #f0c070; }
+  .step-btn.done    { background: #eaf6ef; border-color: #7ec8a0; }
+  .step-btn .step-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #888; }
+  .step-btn.active .step-label  { color: #b07800; }
+  .step-btn.done .step-label    { color: #2e7d52; }
+  .step-btn .step-name { font-size: 14px; font-weight: 500; color: #333; margin-top: 2px; }
+  .step-btn.active .step-name   { color: #b07800; }
+  .step-btn.done .step-name     { color: #2e7d52; }
+  .tab-bar { display: flex; gap: 0; border-bottom: 0.5px solid #e0ddd8; margin-bottom: 1.5rem; overflow-x: auto; }
+  .tab {
+    padding: 8px 14px; font-size: 13px; border: none;
+    background: none; cursor: pointer; color: #888;
+    border-bottom: 2px solid transparent; white-space: nowrap;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .tab.active { color: #b07800; border-bottom-color: #f0c070; font-weight: 500; }
+  .rate-btn {
+    width: 36px; height: 36px; border-radius: 8px;
+    border: 0.5px solid #ccc; background: #fff;
+    font-size: 14px; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #555;
+  }
+  .rate-btn.selected { background: #fef3e2; border-color: #f0c070; color: #b07800; font-weight: 500; }
+  textarea {
+    width: 100%; border: 0.5px solid #e0ddd8; border-radius: 8px;
+    padding: 12px; font-family: Georgia, serif; font-size: 15px;
+    color: #1a1a1a; background: #f9f8f5;
+    min-height: 100px; resize: vertical; line-height: 1.75;
+    outline: none;
+  }
+  textarea:focus { border-color: #f0c070; }
+  .action-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px; border-radius: 8px;
+    border: 0.5px solid #e0ddd8; background: #fff;
+    margin-bottom: 8px; cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .action-item.checked { background: #fef3e2; border-color: #f0c070; }
+  .action-check {
+    width: 20px; height: 20px; border-radius: 4px;
+    border: 0.5px solid #ccc; background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px; font-size: 13px;
+  }
+  .action-item.checked .action-check { background: #fef3e2; border-color: #f0c070; color: #b07800; }
+  .action-item p { font-size: 15px; line-height: 1.65; margin: 0; }
+  .action-item.checked p { color: #b07800; }
+  .score-bar-track { height: 6px; background: #e0ddd8; border-radius: 3px; overflow: hidden; }
+  .score-bar-fill  { height: 100%; background: #f0c070; border-radius: 3px; transition: width .4s; }
+  .verse-callout {
+    border-left: 3px solid #f0c070; padding: 12px 16px;
+    background: #fef9ee; border-radius: 0 8px 8px 0;
+    margin: 1.5rem 0 1rem;
+  }
+  .nav-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 2rem; padding-top: 1rem;
+    border-top: 0.5px solid #e0ddd8;
+  }
+  .btn {
+    padding: 9px 20px; border-radius: 8px; font-size: 14px; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+  }
+  .btn-secondary { background: #f3f1ec; color: #333; border: 0.5px solid #ccc; }
+  .btn-primary   { background: #fef3e2; color: #b07800; border: 0.5px solid #f0c070; }
+  .btn-success   { background: #eaf6ef; color: #2e7d52; border: 0.5px solid #7ec8a0; }
+  .btn-begin     {
+    padding: 13px 40px; background: #fef3e2; color: #b07800;
+    border: 0.5px solid #f0c070; border-radius: 8px;
+    cursor: pointer; font-family: Georgia, serif; font-size: 17px;
+  }
+  .step-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .step-card { padding: 14px 8px; background: #f3f1ec; border-radius: 8px; text-align: center; border: 0.5px solid #e0ddd8; }
+  .score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .score-card { background: #f3f1ec; border-radius: 8px; padding: 14px; border: 0.5px solid #e0ddd8; }
+  .score-num  { font-size: 24px; font-weight: 500; color: #1a1a1a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  @media (max-width: 420px) {
+    h1 { font-size: 24px; }
+    .step-grid { grid-template-columns: 1fr; }
+    .score-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const S = {
+  phase: 0, tab: 0,
+  ratings:     { remember:{}, repent:{}, recover:{} },
+  reflections: { remember:{}, repent:{}, recover:{} },
+  actions:     { remember:{}, repent:{}, recover:{} }
+};
+
+const C = {
+  remember: {
+    heading:'Remember', tag:'Step 1 of 3',
+    verse:'"Remember therefore from where you have fallen." — Revelation 2:5a',
+    teaching:[
+      { h:'You cannot know where you are going until you know where you have been', b:'The King does not open His court with a program — He opens it with a command. Before He prescribes anything, He demands honest diagnosis. "Remember." This is not a suggestion. It is a royal directive from the Head of the Church to His undershepherds. A church that refuses to look back clearly will never move forward powerfully. You must recover your origin before you can recover your destiny.' },
+      { h:'Your church has a Kingdom assignment', b:'Every local church exists for a purpose that is bigger than its budget, its building, and its attendance numbers. God did not plant your congregation in your community by accident. He placed it there with a specific Kingdom assignment — a redemptive mission written into its spiritual DNA from the beginning. The question you must ask in this step is not "what programs did we used to run?" but "what Kingdom purpose were we originally ignited to fulfill?"' },
+      { h:'Grief is not weakness — it is the beginning of wisdom', b:'The leader who cannot honestly assess the gap between what God intended and what currently exists has confused comfort with faithfulness. Sit in that gap. Feel its weight. Let it disturb you. The grief you experience when you remember your congregation's first love is the Holy Spirit refusing to let you settle. That divine dissatisfaction is not condemnation — it is an invitation. He is calling you back to your original assignment.' }
+    ],
+    questions:[
+      'I can clearly articulate the original Kingdom purpose and calling that God gave this congregation.',
+      'The stories of answered prayer, transformation, and spiritual breakthrough from our early days are still being told.',
+      'I can personally identify a season when this congregation was most fully alive to its God-given assignment.',
+      'Our current ministry priorities genuinely reflect our Kingdom mandate — not just our institutional habits.',
+      'I have honestly identified the specific moments or decisions when we began to drift from our first love.'
+    ],
+    prompts:[
+      'When was this congregation most fully functioning in its Kingdom assignment? What was happening spiritually, relationally, and missionally during that season?',
+      'What were the defining convictions, prayers, and sacrifices that marked your congregation's most spiritually vital days? Be specific.',
+      'What has been lost — not just in attendance or programs, but in spiritual atmosphere, Kingdom impact, and divine purpose?',
+      'If the King of the Church were to audit your congregation's current condition against its original assignment, what would the report say?'
+    ],
+    actions:[
+      'Convene a "Kingdom origins" conversation with founders, elders, or long-tenured members to recover the original vision and calling.',
+      'Study your congregation's earliest records, prayer journals, and testimonies. Let the history speak.',
+      'Write a one-page declaration of what your congregation's original Kingdom assignment looked like at its most vital.',
+      'Set aside two hours of solitary prayer — not to plan, but to remember and to grieve honestly before God.',
+      'Open your next leadership gathering with a "remembering" story that honestly names both the glory and the gap.'
+    ]
+  },
+  repent: {
+    heading:'Repent', tag:'Step 2 of 3',
+    verse:'"...repent..." — Revelation 2:5b',
+    teaching:[
+      { h:'Repentance is not a feeling — it is a decision', b:'Let's be clear about what the King is commanding. He is not asking for an emotional experience. He is not asking for tears at an altar, though those may come. The Greek word metanoeō means to change the way you think — and a changed mind always produces changed behavior. Real repentance is not remorse dressed up in religious language. It is a decisive, directional turn. The Ephesian church did not need to feel worse about itself. It needed to turn.' },
+      { h:'Kingdom dysfunction requires corporate correction', b:'The individualism of Western Christianity has produced leaders who confess privately what must be addressed publicly. But when a congregation drifts from its Kingdom assignment, the drift is corporate — and so must be the correction. This does not mean public shame or a platform of accusation. It means that leadership gathers, names what is true, places it before the King, and leads the congregation in a genuine, visible, corporate turn. That is what Kingdom authority looks like when it is turned inward in honesty.' },
+      { h:'You cannot renovate your way to revival', b:'This is the step most leaders skip — and it is exactly why most revitalization efforts fail. A new vision statement will not do it. A rebrand will not do it. A new worship style, a new series, a new staff hire — none of it will produce what only genuine repentance can unlock. You can renovate a building without a contractor, but you cannot revitalize a church without the Holy Spirit. And the Spirit moves in response to genuine, costly, corporate turning. Everything else is rearranging furniture in a spiritually empty room.' }
+    ],
+    questions:[
+      'Our leadership team is prepared to name — honestly and specifically — the ways we have drifted from our Kingdom assignment.',
+      'I have personally owned my own contribution to this congregation's spiritual decline before God.',
+      'Our church culture is honest enough to have hard, grace-filled conversations about our true condition.',
+      'We have identified the specific decisions, neglects, and compromises that accelerated our drift.',
+      'There is genuine, leadership-level grief over the gap between what God assigned us and what we are currently doing.'
+    ],
+    prompts:[
+      'What has God been convicting you of specifically as a leader — not generally, but with names, decisions, and dates attached?',
+      'What are you still unwilling to say out loud — to yourself, to your leadership team, or to God — about the real condition of this congregation?',
+      'What would a genuine, corporate turn look like in your specific context? What would it cost? Who would need to lead it?',
+      'What is the one thing your congregation needs to stop doing — the program, the posture, or the priority — that is consuming resources while producing no Kingdom fruit?'
+    ],
+    actions:[
+      'Convene an extended leadership prayer gathering — not to plan, but to confess, lament, and turn together before God.',
+      'Have one-on-one conversations with your two or three most influential leaders. Invite honest, unguarded self-assessment.',
+      'Write out a personal confession — specific, not general — about your own role in your congregation's drift. Read it to God alone.',
+      'Identify the one cultural or structural shift that would most visibly signal to your congregation that leadership has genuinely turned.',
+      'Commit to daily intercession for a spirit of corporate repentance to fall on your leadership and your congregation.'
+    ]
+  },
+  recover: {
+    heading:'Recover', tag:'Step 3 of 3',
+    verse:'"...and do the deeds you did at first." — Revelation 2:5c',
+    teaching:[
+      { h:'Purpose is not recovered by feeling — it is recovered by doing', b:'The King does not say, "Wait until you feel revived." He says, "Do." This is perhaps the most countercultural command in the letters to the seven churches. We have been conditioned to wait for an emotional experience before we act. But the Kingdom operates on a different principle: obedience precedes experience. You do not wait to feel like a praying church before you start praying. You pray — and in the doing, the fire returns.' },
+      { h:'Your original assignment is still valid', b:'One of the enemy's most effective strategies is to convince a congregation that its best days are behind it — that the anointing has moved on, that the season has passed, that the community has changed too much. That is a lie. The gifts and calling of God are irrevocable. The Kingdom assignment God gave your congregation has not expired. It has been neglected. And what has been neglected can be recovered — not by human effort alone, but by Spirit-empowered, obedience-driven return to first things.' },
+      { h:'Revitalization is a marathon run by people who refuse to quit', b:'Do not expect this to be resolved in ninety days. A congregation that has spent years in spiritual decline will not be fully recovered in a single season. But do not let that discourage you — let it sober you. You are not planting a feeling. You are rebuilding the altar. You are reestablishing the patterns of Kingdom-minded, Spirit-dependent people who have decided they will not let their congregation die on their watch. Plant the seeds. Water them with prayer. Trust the King for the harvest.' }
+    ],
+    questions:[
+      'We can name the specific "first deeds" — the Kingdom practices and spiritual disciplines — that marked our most vital season.',
+      'Our current ministry calendar reflects our actual Kingdom priorities, not just the programs we have been afraid to stop.',
+      'We are genuinely willing to eliminate good things in order to recover the most essential things.',
+      'Our congregation understands that recovery requires active, Spirit-led obedience — not passive waiting for revival to arrive.',
+      'I am personally modeling a return to first-love Kingdom practices in my own life, prayer, and leadership.'
+    ],
+    prompts:[
+      'What are the two or three specific Kingdom practices that, if restored, would most clearly signal that this congregation has returned to its original assignment?',
+      'What is currently occupying your congregation's time, energy, money, and attention that produces activity without Kingdom impact?',
+      'What will you see, hear, and experience in your congregation when recovery is genuinely underway? Be specific enough that you will recognize it when it comes.',
+      'What is the single most concrete Kingdom deed your congregation could take in the next thirty days — not a plan, not a committee, but an actual act of obedience?'
+    ],
+    actions:[
+      'Restore one specific first deed to your congregational life within the next thirty days. Put it on the calendar today.',
+      'Conduct a ruthless audit of your ministry calendar: eliminate what produces activity without fruit, protect what produces Kingdom impact.',
+      'Preach or teach a message that calls your congregation back to its original Kingdom identity, assignment, and first love.',
+      'Assemble a small, trusted renewal team — not a committee, but a covenant community committed to the recovery process.',
+      'Write a 90-day Kingdom recovery plan with no more than three specific, measurable, Spirit-dependent commitments.'
+    ]
+  }
+};
+
+const keys = ['remember','repent','recover'];
+const tabs = ['Teaching','Assessment','Reflection','Action Plan'];
+
+function score(k) {
+  const v = Object.values(S.ratings[k]);
+  if (!v.length) return 0;
+  return Math.round(v.reduce((a,b)=>a+b,0) / (v.length*5)*100);
+}
+
+function scoreLabel(pct) {
+  if (pct>=80) return 'A Kingdom strength to build on';
+  if (pct>=60) return 'Health present; gaps remain';
+  if (pct>=40) return 'Targeted Kingdom work needed';
+  if (pct>0)   return 'Significant reorientation needed';
+  return 'Not yet assessed';
+}
+
+function header() {
+  return `<div class="step-nav">` +
+    keys.map((k,i)=>{
+      const n=i+1, active=S.phase===n, done=S.phase>n;
+      const cls = done?'done':active?'active':'';
+      return `<div class="step-btn ${cls}" onclick="goP(${n})">
+        <div class="step-label">Step ${n}</div>
+        <div class="step-name">${C[k].heading}</div>
+      </div>`;
+    }).join('') + `</div>`;
+}
+
+function renderWelcome() {
+  return `
+  <div style="text-align:center;padding:1rem 0 2rem;">
+    <div class="sans" style="font-size:12px;color:#b07800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;font-weight:600;">A Kingdom Guide for Church Revitalization</div>
+    <h1 style="margin-bottom:.5rem;">Remember.<br>Repent. Recover.</h1>
+    <p style="max-width:440px;margin:0 auto 1.75rem;color:#666;">A guide for Kingdom leaders called to move their congregation from spiritual decline back to Spirit-engendered, purpose-driven vitality — anchored in Christ's words to the church at Ephesus.</p>
+    <div class="card" style="max-width:460px;margin:0 auto 1.75rem;text-align:left;">
+      <p style="font-size:16px;font-style:italic;line-height:1.85;color:#1a1a1a;margin-bottom:8px;">"Remember therefore from where you have fallen; repent and do the deeds you did at first."</p>
+      <p class="sans" style="font-size:13px;color:#999;margin:0;">— Revelation 2:5, NASB</p>
+    </div>
+    <div class="surface" style="max-width:460px;margin:0 auto 1.25rem;text-align:left;">
+      <p class="sans" style="font-size:14px;color:#555;line-height:1.8;margin:0;">The Head of the Church is not silent about the condition of His Body. In Revelation 2:5, He gives every declining congregation a three-part prescription — not a program, not a rebrand, not a strategic plan. A return. A turn. A recommitment to first things. This guide will walk you through all three steps.</p>
+    </div>
+    <div class="step-grid" style="max-width:420px;margin:0 auto 1.75rem;">
+      ${['Remember','Repent','Recover'].map((l,i)=>`<div class="step-card">
+        <div class="sans" style="font-size:12px;color:#999;margin-bottom:4px;">Step ${i+1}</div>
+        <div style="font-size:17px;font-weight:500;color:#1a1a1a;">${l}</div>
+      </div>`).join('')}
+    </div>
+    <div class="surface" style="max-width:460px;margin:0 auto 2rem;text-align:left;">
+      <p class="sans" style="font-size:14px;font-weight:600;margin-bottom:8px;color:#1a1a1a;">How to use this guide</p>
+      <p class="sans" style="font-size:14px;color:#555;line-height:1.75;margin:0;">Each step contains <strong>Kingdom teaching</strong> to study, an honest <strong>self-assessment</strong> to complete, <strong>reflection questions</strong> to wrestle with before God, and a concrete <strong>action plan</strong> to build. Do not rush it. Revitalization is not a sprint — it is a covenant commitment to the King and His purposes for your congregation.</p>
+    </div>
+    <button class="btn-begin" onclick="goP(1)">Begin the Journey</button>
+  </div>`;
+}
+
+function renderPhase(k) {
+  const d = C[k];
+  return header() +
+  `<div style="margin-bottom:1rem;">
+    <div class="sans" style="font-size:12px;color:#b07800;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">${d.tag}</div>
+    <h2 style="margin-bottom:4px;">${d.heading}</h2>
+    <p style="font-style:italic;color:#888;font-size:14px;margin:0;">${d.verse}</p>
+  </div>
+  <div class="tab-bar">
+    ${tabs.map((t,i)=>`<button class="tab sans ${S.tab===i?'active':''}" onclick="goT(${i})">${t}</button>`).join('')}
+  </div>
+  <div id="tc">${getTabContent(k)}</div>
+  <div class="nav-footer">
+    <button class="btn btn-secondary" onclick="prev()">Back</button>
+    <span class="sans" style="font-size:13px;color:#999;">${tabs[S.tab]}</span>
+    <button class="btn btn-primary" onclick="next()">Next</button>
+  </div>`;
+}
+
+function getTabContent(k) {
+  if (S.tab===0) return rTeach(k);
+  if (S.tab===1) return rAssess(k);
+  if (S.tab===2) return rReflect(k);
+  return rActions(k);
+}
+
+function rTeach(k) {
+  const d = C[k];
+  return d.teaching.map(t=>`<div style="margin-bottom:1.5rem;">
+    <h3 style="margin-bottom:8px;">${t.h}</h3>
+    <p>${t.b}</p>
+  </div>`).join('') +
+  `<div class="verse-callout">
+    <p style="font-style:italic;color:#a07000;font-size:15px;line-height:1.8;margin:0;">${d.verse}</p>
+  </div>
+  <p class="sans" style="font-size:13px;color:#999;text-align:center;margin:0;">When you are ready, move to the Assessment tab to evaluate where your congregation currently stands.</p>`;
+}
+
+function rAssess(k) {
+  const d = C[k], pct = score(k);
+  const scoreHtml = pct>0 ? `<div class="surface" style="margin-top:1rem;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+      <span class="sans" style="font-size:13px;color:#666;">Current score</span>
+      <span class="sans" style="font-size:13px;font-weight:600;color:#b07800;">${pct}% — ${scoreLabel(pct)}</span>
+    </div>
+    <div class="score-bar-track"><div class="score-bar-fill" style="width:${pct}%;"></div></div>
+  </div>` : '';
+  return `<p class="sans" style="font-size:14px;color:#666;margin:0 0 1.25rem;line-height:1.7;">Rate each statement honestly from 1 (not at all true) to 5 (very true). The King already knows the answer — this exercise is for your own honest reckoning.</p>` +
+    d.questions.map((q,i)=>`<div class="card" style="margin-bottom:10px;">
+      <p style="font-size:15px;color:#1a1a1a;margin:0 0 12px;line-height:1.65;">${i+1}. ${q}</p>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="sans" style="font-size:12px;color:#aaa;">Not true</span>
+        ${[1,2,3,4,5].map(v=>`<button class="rate-btn ${S.ratings[k][i]===v?'selected':''}" onclick="rate('${k}',${i},${v})">${v}</button>`).join('')}
+        <span class="sans" style="font-size:12px;color:#aaa;">Very true</span>
+      </div>
+    </div>`).join('') + scoreHtml;
+}
+
+function rReflect(k) {
+  const d = C[k];
+  return `<p class="sans" style="font-size:14px;color:#666;margin:0 0 1.25rem;line-height:1.7;">These are not quick journaling exercises — they are Kingdom interrogations. Take them seriously. Write as honestly before God as you would want your congregation to be before Him.</p>` +
+    d.prompts.map((q,i)=>`<div style="margin-bottom:1.5rem;">
+      <label style="display:block;font-size:15px;color:#1a1a1a;line-height:1.65;margin-bottom:8px;font-weight:500;">${i+1}. ${q}</label>
+      <textarea oninput="saveR('${k}',${i},this.value)" placeholder="Write your honest response here...">${S.reflections[k][i]||''}</textarea>
+    </div>`).join('') +
+  `<div class="surface">
+    <p class="sans" style="font-size:13px;color:#888;margin:0;line-height:1.7;">These reflections carry weight. Consider processing them with a trusted Kingdom colleague, a ministry coach, or a small circle of leaders committed to honest accountability.</p>
+  </div>`;
+}
+
+function rActions(k) {
+  const d = C[k];
+  const checked = Object.values(S.actions[k]).filter(Boolean).length;
+  return `<p class="sans" style="font-size:14px;color:#666;margin:0 0 1.25rem;line-height:1.7;">Select the actions you are committing to before God. These are not suggestions — they are Kingdom assignments you are choosing to accept.</p>` +
+    d.actions.map((a,i)=>{
+      const on = S.actions[k][i];
+      return `<div class="action-item ${on?'checked':''}" onclick="tog('${k}',${i})">
+        <div class="action-check">${on?'&#10003;':''}</div>
+        <p>${a}</p>
+      </div>`;
+    }).join('') +
+  `<div class="surface" style="margin-top:8px;">
+    <p class="sans" style="font-size:13px;color:#888;margin:0;">${checked} of ${d.actions.length} Kingdom assignments accepted for this step.</p>
+  </div>`;
+}
+
+function renderSummary() {
+  const total = keys.reduce((t,k)=>t+Object.values(S.actions[k]).filter(Boolean).length,0);
+  const hasReflections = keys.some(k=>Object.values(S.reflections[k]).some(r=>r&&r.trim()));
+  return header() +
+  `<div style="margin-bottom:1.5rem;">
+    <div class="sans" style="font-size:12px;color:#2e7d52;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">Journey Complete</div>
+    <h2 style="margin-bottom:4px;">Your Kingdom Recovery Summary</h2>
+    <p style="font-size:14px;color:#666;margin:0;">Your diagnostic scores, honest reflections, and committed Kingdom assignments — all three steps.</p>
+  </div>
+  <div class="score-grid">
+    ${keys.map(k=>{
+      const pct=score(k);
+      return `<div class="score-card">
+        <div class="sans" style="font-size:12px;color:#888;margin-bottom:4px;">${C[k].heading}</div>
+        <div class="score-num">${pct}%</div>
+        <div class="sans" style="font-size:11px;color:#aaa;margin:4px 0 8px;">${scoreLabel(pct)}</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:${pct}%;"></div></div>
+      </div>`;
+    }).join('')}
+  </div>
+  <div style="margin-bottom:1.5rem;">
+    <h3 style="margin:0 0 1rem;">Your Kingdom Action Plan (${total} assignment${total!==1?'s':''})</h3>
+    ${total===0?`<p style="color:#aaa;font-size:14px;">No assignments accepted yet. Return to the Action Plan tab in each step to make your commitments.</p>`:''}
+    ${keys.map(k=>{
+      const committed=C[k].actions.filter((_,i)=>S.actions[k][i]);
+      if(!committed.length) return '';
+      return `<div style="margin-bottom:1.25rem;">
+        <div class="sans" style="font-size:12px;font-weight:600;color:#b07800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Step ${keys.indexOf(k)+1}: ${C[k].heading}</div>
+        ${committed.map(a=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:0.5px solid #e0ddd8;">
+          <span style="color:#2e7d52;font-size:14px;margin-top:2px;flex-shrink:0;">&#10003;</span>
+          <p style="margin:0;font-size:14px;color:#1a1a1a;line-height:1.65;">${a}</p>
+        </div>`).join('')}
+      </div>`;
+    }).join('')}
+  </div>
+  ${hasReflections?`<div style="margin-bottom:1.5rem;">
+    <h3 style="margin:0 0 1rem;">Your Reflections</h3>
+    ${keys.map(k=>{
+      const entries=C[k].prompts.map((q,i)=>({q,a:S.reflections[k][i]})).filter(e=>e.a&&e.a.trim());
+      if(!entries.length) return '';
+      return `<div style="margin-bottom:1.25rem;">
+        <div class="sans" style="font-size:12px;font-weight:600;color:#b07800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">${C[k].heading}</div>
+        ${entries.map(e=>`<div class="card" style="margin-bottom:8px;">
+          <p class="sans" style="font-size:12px;font-weight:600;color:#888;margin:0 0 6px;">${e.q}</p>
+          <p style="font-size:14px;color:#1a1a1a;margin:0;line-height:1.8;">${e.a}</p>
+        </div>`).join('')}
+      </div>`;
+    }).join('')}
+  </div>`:''}
+  <div class="card" style="margin-bottom:1.25rem;">
+    <p style="font-size:16px;font-style:italic;line-height:1.85;color:#1a1a1a;margin-bottom:8px;">"He who has an ear, let him hear what the Spirit says to the churches."</p>
+    <p class="sans" style="font-size:13px;color:#aaa;margin:0;">— Revelation 2:7</p>
+  </div>
+  <p class="sans" style="font-size:14px;color:#666;text-align:center;line-height:1.75;margin-bottom:1.5rem;">You have done the work of remembering, turning, and committing. Now the King takes over. He who began a good work in your congregation is faithful to complete it. Go lead with Kingdom authority — and trust Him for the harvest.</p>
+  <div style="text-align:center;">
+    <button class="btn btn-secondary" onclick="goP(1)" style="margin-right:10px;">Review from Step 1</button>
+    <button class="btn btn-success" onclick="window.print()">Print Summary</button>
+  </div>`;
+}
+
+function render() {
+  const el = document.getElementById('app');
+  if (S.phase===0) el.innerHTML = renderWelcome();
+  else if (S.phase===4) el.innerHTML = renderSummary();
+  else el.innerHTML = renderPhase(keys[S.phase-1]);
+}
+
+function goP(n) { S.phase=n; S.tab=0; render(); }
+function goT(n) { S.tab=n; render(); }
+function rate(k,i,v) { S.ratings[k][i]=v; render(); }
+function saveR(k,i,v) { S.reflections[k][i]=v; }
+function tog(k,i) { S.actions[k][i]=!S.actions[k][i]; render(); }
+
+function next() {
+  if (S.tab<3) { S.tab++; render(); }
+  else if (S.phase<3) { S.phase++; S.tab=0; render(); }
+  else { S.phase=4; render(); }
+}
+
+function prev() {
+  if (S.tab>0) { S.tab--; render(); }
+  else if (S.phase>1) { S.phase--; S.tab=3; render(); }
+  else { S.phase=0; render(); }
+}
+
+render();
+</script>
+</body>
+</html>
